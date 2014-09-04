@@ -1,0 +1,94 @@
+extends../layouts/default
+
+
+
+
+
+
+        mixin
+displayDispo(eventid, competenceid)
+        div(class = 'col-xs-#{data.bootstrapsize}' style = "border-top:2px solid black;padding-top:10px")
+        - var value = 'C';
+        - var found = 'CREATE'
+        each
+reg in data.registrations
+        if reg.competence._id.toString() === competenceid.toString() && reg.eventDate._id.toString() === eventid.toString()
+        - value = reg.availability.toString();
+        - found = 'UPDATE'
+        select(id = found + '-' + eventid + '-' + competenceid name = found + '-' + eventid + '-' + competenceid onchange = 'changeDispo(\'' + found + '-' + eventid + '-' + competenceid + '\')')
+        if value == 'C'
+        option.blanc(value = 'C', selected)
+Choix...
+        else
+        option.blanc(value = 'C')
+Choix...
+        if value == 'D'
+        option.vert(value = 'D', selected)
+Disponible
+        else
+        option.vert(value = 'D')
+Disponible
+        if value == 'SN'
+        option.orange(value = 'SN', selected)
+Si nécessaire
+        else
+        option.orange(value = 'SN')
+Si nécessaire
+        if value == 'ND'
+        option.rouge(value = 'ND', selected)
+Non - disponible
+        else
+        option.rouge(value = 'ND') Non - disponible
+        script(type = 'text/javascript').
+        setColor('#{found}-#{eventid}-#{competenceid}');
+
+mixin
+displayLine(event)
+        div.row
+div(class = 'col-xs-2' style = "border-top:2px solid black;padding-top:10px")
+        b
+#{event.title}
+p
+#{jolieDate(event.eventDate)}
+each
+competence in data.competences
+        +displayDispo(event._id, competence._id)
+
+
+
+block
+intro
+        .container
+        h1
+Mes disponibilités
+
+        block
+content
+        .container:.row
+        if user
+        if data.events
+        form(method = 'post')
+button(type = 'submit').btn.btn - primary
+Sauvegarder
+        br
+br
+div(class = "alert alert-warning" role = "alert" id = 'pagemodified' hidden = 'true')
+        div.row
+div(class = 'col-xs-2')
+        b
+each
+competence in data.competences
+        div(class = 'col-xs-#{data.bootstrapsize}')
+        b
+#{competence.name}
+each
+event in data.events
+        +displayLine(event)
+else
+        h3.text - muted
+Il n'y a pas d'evenements planifiés
+        else
+        div(class = "alert alert-warning" role = "alert")
+        h3.text - muted
+Vous n'êtes pas connecté :
+        a(href = '/keystone/signin') Se connecter

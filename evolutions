@@ -1,0 +1,14 @@
+Matrice d'utilisation simultanées de compétences.
+
+Tableau référençant les compétances pouvant êtres utilisées en même temps: 
+piano + chant etc...
+
+Tableau de personnes devant de manière préférentielles jouer ensemble
+
+Tableau de réccurence et de rythme (faire attention a ce qu'une personne ne soit pas toujours de musique...)
+
+Blocage : On ne peut pas avoir deux pianos, + de 2 flutes etc, plus de x instruments à vent etc...
+
+pouvoir forcer ces blocages, afficher des alertes etc...
+
+Travail par module, permettant de mettre des poids aux différents modules etc...

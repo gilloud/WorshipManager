@@ -1,0 +1,74 @@
+extends ../layouts/default
+
+mixin
+block intro
+	.container
+		h1 Mes informations
+
+block content
+	if user
+		form(method='post')
+			.container 
+				.row(style='margin-bottom:10px')
+					.col-sm-6.col-md-6
+						p
+							b Je suis :
+
+					.col-sm-6.col-md-6
+						p #{user.name.first} #{user.name.last}
+				.row(style='margin-bottom:10px')
+					.col-sm-6.col-md-6
+						p
+							b E-mail :
+						i Votre e-mail est votre identifiant et l'adresse utilisée pour vous contacter. Si vous le changez, votre identifiant à EpedLouange changera également !
+					.col-sm-6.col-md-6
+						br
+						input.form-control(type='email' name='email' value='#{user.email}')
+				.row(style='margin-bottom:10px')
+					.col-sm-6.col-md-6
+						p
+							b Choisir un nouveau mot de passe :
+						i Le mot de passe est utilisé pour l'identification EpedLouange seulement (Identification par défaut).
+					.col-sm-6.col-md-6
+						br
+						input(type='password' name='password' id='thepassword' value='')
+						
+				.row(style='margin-bottom:10px')
+					.col-sm-6.col-md-6
+						p
+							b Identifiant Facebook :
+						i Il est possible d'associer votre compte Facebook à EpedLouange, afin de vous identifier grâce à votre compte Facebook.
+					.col-sm-6.col-md-6
+						br
+						input.form-control(type='mail' name='facebookLoginId' value='#{user.facebookLoginId}')
+				.row(style='margin-bottom:10px')
+					.col-sm-6.col-md-6
+						p
+							b Identifiant Google :
+						i Il est possible d'associer votre compte Google à EpedLouange, afin de vous identifier grâce à votre compte Google.
+
+					.col-sm-6.col-md-6
+						br
+						input.form-control(type='mail' name='googleLoginId'  value='#{user.googleLoginId}')
+				.row(style='margin-bottom:10px')
+					.col-sm-6.col-md-6
+						p
+							b Mes compétences :
+						i Si vous désirez mettre à jour vos compétences, merci de prendre contact avec les responsables du groupe de louange.
+					.col-sm-6.col-md-6
+						ul
+						each competence in data.competences
+							li #{competence.name}
+					
+				.row(style='margin-bottom:10px')
+					.col-sm-12.com-md-12
+						button(type='submit').btn.btn-primary Mettre à jour mes informations
+				if user.canAccessKeystone
+					hr
+					p <u>Informations utilisateur :</u> #{user}
+					p <u>Informations compétences :</u> #{data.competences}
+	else
+		.container: .row: .col-sm-12.col-md-12
+			div(class="alert alert-warning" role="alert")
+				h3.text-muted Vous n'êtes pas connecté : 
+					a(href='/keystone/signin') Se connecter

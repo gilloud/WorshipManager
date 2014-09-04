@@ -1,0 +1,114 @@
+extends ../layouts/default
+
+block intro
+	.container
+
+block content
+	.container: .row
+		.col-sm-12.col-md-12
+		h1 Gestion du planning
+		p: a(href='/keystone/event-dates?new')
+				span(class="glyphicon glyphicon-edit")
+				span  Ajouter un évènement
+			
+		if data.events.length
+			.col-sm-12.col-md-12
+				.row(style='')
+					.col-sm-2.col-md-2
+						b Titre
+					.col-sm-2.col-md-2
+						span(class="glyphicon glyphicon-calendar")
+						b Date
+					.col-sm-2.col-md-2
+						b Description
+					.col-sm-2.col-md-2
+						b Président
+					.col-sm-2.col-md-2
+						b Statistiques (Beta)
+					.col-sm-2.col-md-2
+						b Actions
+				- var i = 0;
+				each event in data.events
+					- var v_color = 'white';
+					if ( i % 2 ) == 0
+						- v_color = '#E8E8E8';
+					- i++;
+					.row(style='border-top:2px solid black;padding:7px;background-color:#{v_color};')
+						.col-sm-2.col-md-2
+							b: a(href='/planning/#{event._id}') #{event.title}
+						.col-sm-2.col-md-2
+							p #{jolieDate(event.eventDate)} 
+						.col-sm-2.col-md-2
+							if event.description
+								p #{event.description} 
+							else
+								p -
+						.col-sm-2.col-md-2
+							if event.president
+								p #{event.president.name.first} #{event.president.name.last}
+							else
+								p -
+						.col-sm-2.col-md-2
+							span.badge(title='Pourcentage de dispo pour cette date : somme des réponses autorisant la sélection / somme des compétences de l\'ensemble ('+event.countDispo+'/'+data.countCompetences+')') #{percentCalculation(event.countDispo,data.countCompetences)}% Dispo
+							span.badge(title='Pourcentage de remplissage pour cette date : somme des réponses / somme des compétences de l\'ensemble ('+event.nbResponses+'/'+data.countCompetences+')') #{percentCalculation(event.nbResponses,data.countCompetences)}% Rempli
+						.col-sm-2.col-md-2
+							a(href='/planning/#{event._id}') 
+								span(class="glyphicon glyphicon-file")
+								span &nbsp;Affectations
+							br
+							a(href='/keystone/event-dates/#{event._id}') 
+								span(class="glyphicon glyphicon-edit")
+								span &nbsp;Modifier l'évènement
+						
+		br
+		if data.oldevents.length
+			.container: .row
+				.col-sm-12.col-md-12
+				h1 Anciens évènements
+				if data.oldevents.length
+					.col-sm-12.col-md-12
+						.row(style='border:1px solid black')
+							.col-sm-2.col-md-2
+								p Titre
+							.col-sm-2.col-md-2
+								span(class="glyphicon glyphicon-calendar")
+								span Date
+							.col-sm-2.col-md-2
+								p Description
+							.col-sm-2.col-md-2
+								p Président
+							.col-sm-2.col-md-2
+								p Statistiques
+							.col-sm-2.col-md-2
+								p Actions
+						- var i = 0;
+						each event in data.oldevents
+							- var v_color = 'white';
+							if ( i % 2 ) == 0
+								- v_color = '#F8F8F8';
+							- i++;
+							.row(style='border-bottom:1px solid black;padding:7px;background-color:#{v_color};')
+								.col-sm-2.col-md-2
+									a(href='/planning/#{event._id}') #{event.title}
+								.col-sm-2.col-md-2
+									p #{jolieDate(event.eventDate)} 
+								.col-sm-2.col-md-2
+									if event.description
+										p #{event.description} 
+									else
+										p -
+								.col-sm-2.col-md-2
+									if event.president
+										p #{event.president.name.first} #{event.president.name.last}
+									else
+										p -
+								.col-sm-2.col-md-2
+									span.badge(title='Pourcentage de dispo pour cette date : somme des réponses autorisant la sélection / somme des compétences de l\'ensemble ('+event.countDispo+'/'+data.countCompetences+')') #{percentCalculation(event.countDispo,data.countCompetences)}% Dispo
+									span.badge(title='Pourcentage de remplissage pour cette date : somme des réponses / somme des compétences de l\'ensemble ('+event.nbResponses+'/'+data.countCompetences+')') #{percentCalculation(event.nbResponses,data.countCompetences)}% Rempli
+								.col-sm-2.col-md-2
+									a(href='/planning/#{event._id}') 
+										span(class="glyphicon glyphicon-file")
+										span &nbsp;Fiche
+			hr
+			span(class="glyphicon glyphicon-info-sign")
+			span  Ecran réservé aux seuls administrateurs de EpedLouange

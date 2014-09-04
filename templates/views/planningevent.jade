@@ -1,0 +1,73 @@
+extends ../layouts/default
+
+block intro
+	.container: .row
+		.col-sm-6
+			p: a(href='/planning')
+				span(class="glyphicon glyphicon-arrow-left")
+				span  Retour au planning
+				
+
+block content
+	.container: .row
+		.col-md-12
+			div(class="alert alert-info" role="alert" id='note')
+				p Cette page ne sert qu'à effectuer la sélection. <b>Rien n'est sauvegardé</b>. Après sélection avec le bouton <span class="glyphicon glyphicon-ok"></span>, un modèle d'e-mail est situé sur la partie de droite. 
+					a(onClick="closeMe('note')" href="javascript:void(0)" alt="Fermer ce bloc")
+						span(class="glyphicon glyphicon-remove")
+	.container: .row
+		.col-md-6
+			h1 #{data.event.title} (#{jolieDate(data.event.eventDate)})
+			p: a(href='/keystone/event-dates/#{data.event._id}')
+				span(class="glyphicon glyphicon-edit")
+				span  Modifier l'évènement
+			if data.event.description
+				p 
+					i #{data.event.description}
+			if data.event.president
+				p Président : #{data.event.president.name.first} #{data.event.president.name.last}
+			- var ilyaunedispo = false;
+			each competence in data.competences
+				if competence.registrations.length > 0
+					- ilyaunedispo = true;
+					h4 #{competence.name}
+					ul.list-group
+					each reg in competence.registrations
+						li(class="color-#{reg.availability}").list-group-item #{reg.person.name.first} #{reg.person.name.last}
+							
+							span.badge
+								a(href="javascript:void(0)" style="text-decoration:none;color:white;"  onclick="managegroup('#{reg.person.name.first} #{reg.person.name.last}','#{competence.name}','id-#{reg._id}','NOSPAMAZA-AZA#{reg.person.email}')")
+									span.glyphicon.glyphicon-ok(id="id-#{reg._id}")
+								
+									
+			if ilyaunedispo === false
+				p Il n'y a malheureusement personne de disponible pour cette date...
+		.col-md-6
+			.row
+				.col-md-12(id="fullsummary" data-spy="affix" data-offset-top="1" data-offset-bottom="200") 
+					br
+					div(style="width:500px") Voici la liste des personnes faisant partie du groupe de louange pour le <b>#{data.event.title}</b> du <b>#{jolieDate(data.event.eventDate)}</b> :
+					if data.event.description
+						div(style="width:500px"): i #{data.event.description}
+					ul(id="summary")
+					hr
+					div: p: u Destinataires de l'e-mail :
+
+					div(id="destinataires")
+					script(type='text/javascript').
+						+ displayDatasEmpty();
+					if data.event.president
+						script(type='text/javascript').
+							+ addStatic('#{data.event.president.name.first} #{data.event.president.name.last}','Président','id-president','NOSPAMAZA-AZA#{data.event.president.email}')
+					else
+						hr
+						span(class="glyphicon glyphicon-info-sign")
+						span  Aucun président n'est affecté à cette date actuellement. 
+							a(href='/keystone/event-dates/#{data.event._id}')
+								span(class="glyphicon glyphicon-edit")
+								span  En ajouter
+
+	.container: .row: .col-sm-12.col-md-12
+		hr
+		span(class="glyphicon glyphicon-info-sign")
+		span  Ecran réservé aux seuls administrateurs de EpedLouange

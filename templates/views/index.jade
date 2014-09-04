@@ -1,0 +1,31 @@
+extends ../layouts/default
+
+block content
+	.container: .jumbotron
+		.row
+			.col-sm-3.col-md-3
+				img(src='http://www.epe-drac.fr/wp-content/uploads/2012/05/logo.png', width='80%')
+			.col-sm-9.col-md-9
+				h1 <span class="glyphicon glyphicon-calendar"></span>  EpedLouange
+				
+				if user
+					if  data.percent_filled <= 30
+						p <span class="glyphicon glyphicon-calendar"></span>  EpedLouange est l'outil choisi par le groupe de louange de l'église du Drac. A travers cet outil, il est possible de définir son <b>planning de disponibilités</b> pour les cultes à venir. Le coordinateur peut ensuite constituer le groupe pour le dimanche à travers cet outil.
+						p La suite, se situe dans le menu "Disponibilités". 
+						if data.percent_filled == 0
+							p Tu n'as pas encore rempli tes disponibilités, #{user.name.first}. A toi de jouer !
+						else				
+							p Tes disponibilités sont remplies à #{data.percent_filled}% #{user.name.first} !
+
+					if data.percent_filled > 30 && data.percent_filled < 80
+						p Bienvenue dans <span class="glyphicon glyphicon-calendar"></span>  EpedLouange.
+						p Tes disponibilités sont remplies à <b>#{data.percent_filled}%</b> #{user.name.first}, merci déjà pour toutes ces dates remplies ! A toi de jouer dans le menu Disponibilités.
+					if data.percent_filled > 80 && data.percent_filled < 100
+						p Bienvenue dans <span class="glyphicon glyphicon-calendar"></span>  EpedLouange.
+						p Tes disponibilités sont remplies à <b>#{data.percent_filled}%</b>. Bravo #{user.name.first}!	
+					if data.percent_filled >= 100
+						p Bienvenue dans <span class="glyphicon glyphicon-calendar"></span>  EpedLouange.
+						p #{user.name.first}, tes disponibilités sont remplies à <b>#{data.percent_filled}%</b>, Félicitations !
+				else
+					p <span class="glyphicon glyphicon-calendar"></span>  EpedLouange est l'outil choisi par le groupe de louange de l'église du Drac. A travers cet outil, il est possible de définir son <b>planning de disponibilités</b> pour les cultes à venir. Le coordinateur peut ensuite constituer le groupe pour le dimanche à travers cet outil.
+					p Pour continuer, connectez-vous !
