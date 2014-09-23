@@ -124,8 +124,9 @@ var displayDatas = function(a_mail, members)
         v_concat = 'Pas de destinataire actuellement. Utilisez <span class="glyphicon glyphicon-ok"></span>.';
     }
     var dest = document.getElementById('destinataires');
-    dest.innerHTML = v_concat;
-
+    if (dest !== null) {
+        dest.innerHTML = v_concat;
+    }
     var summary = document.getElementById('summary');
     v_concat = '';
     for (var i in members)
@@ -136,7 +137,9 @@ var displayDatas = function(a_mail, members)
     {
         v_concat = '<li>Pas de personne sélectionnée actuellement. Utilisez <span class="glyphicon glyphicon-ok"></span>.</li>';
     }
-    summary.innerHTML = v_concat;
+    if (summary !== null) {
+        summary.innerHTML = v_concat;
+    }
 };
 
 var mail_dest = new Array();
@@ -164,6 +167,24 @@ var delStatic = function(id)
 
 };
 
+var saved = [];
+var addSaved = function (person, competence, id, email)
+{
+    saved.push({person: person, competence: competence, id: id, email: email});
+ 
+};
+
+var loadSaved = function ()
+{
+    for (var i in saved)
+    {
+        addStatic(saved[i].person, saved[i].competence, saved[i].id, saved[i].email);
+        document.getElementById(saved[i].id).setAttribute('class', 'glyphicon glyphicon-remove');
+
+
+    }
+};
+
 var managegroup = function(person, competence, id, email)
 {
 
@@ -173,13 +194,24 @@ var managegroup = function(person, competence, id, email)
 
         addStatic(person, competence, id, email);
 
+        savetoDB(id, 'add');
+
     } else
     {
         document.getElementById(id).setAttribute('class', 'glyphicon glyphicon-ok');
         delStatic(id);
-
+        savetoDB(id, 'remove');
     }
     return false;
+};
+
+var savetoDB = function (id, action)
+{
+
+    var split = id.split('-');
+    $.ajax({url: "/planning/save/" + split[1] + "/" + action, success: function (result) {
+
+        }});
 };
 
 var closeMe = function(id)

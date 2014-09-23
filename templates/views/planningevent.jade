@@ -10,12 +10,6 @@ block intro
 
 block content
 	.container: .row
-		.col-md-12
-			div(class="alert alert-info" role="alert" id='note')
-				p Cette page ne sert qu'à effectuer la sélection. <b>Rien n'est sauvegardé</b>. Après sélection avec le bouton <span class="glyphicon glyphicon-ok"></span>, un modèle d'e-mail est situé sur la partie de droite. 
-					a(onClick="closeMe('note')" href="javascript:void(0)" alt="Fermer ce bloc")
-						span(class="glyphicon glyphicon-remove")
-	.container: .row
 		.col-md-6
 			h1 #{data.event.title} (#{jolieDate(data.event.eventDate)})
 			p: a(href='/keystone/event-dates/#{data.event._id}')
@@ -34,11 +28,15 @@ block content
 					ul.list-group
 					each reg in competence.registrations
 						li(class="color-#{reg.availability}").list-group-item #{reg.person.name.first} #{reg.person.name.last}
-							
 							span.badge
 								a(href="javascript:void(0)" style="text-decoration:none;color:white;"  onclick="managegroup('#{reg.person.name.first} #{reg.person.name.last}','#{competence.name}','id-#{reg._id}','NOSPAMAZA-AZA#{reg.person.email}')")
 									span.glyphicon.glyphicon-ok(id="id-#{reg._id}")
-								
+							if reg.registered
+								script(type='text/javascript').
+									addSaved('#{reg.person.name.first} #{reg.person.name.last}','#{competence.name}','id-#{reg._id}','NOSPAMAZA-AZA#{reg.person.email}');
+			script(type='text/javascript').
+				loadSaved();
+
 									
 			if ilyaunedispo === false
 				p Il n'y a malheureusement personne de disponible pour cette date...
