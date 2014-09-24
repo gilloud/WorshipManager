@@ -43,9 +43,9 @@ exports = module.exports = function(app) {
     //app.get('/blog2/post2/:post', routes.views.post2);
     app.all('/disponibilite', routes.views.disponibilite);
     app.all('/planning', routes.views.planning);
-    app.all('/planning/:eventid', routes.views.planningevent);
-    app.all('/sendmail/:eventid', routes.views.sendmail);
-    app.all('/planning/save/:registration/:action', routes.views.saveregistration);
+    app.all('/planning/:eventid', middleware.requireUser,routes.views.planningevent);
+    app.all('/sendmail/:eventid', middleware.requireUser, routes.views.sendmail);
+    app.all('/planning/save/:registration/:action', middleware.requireUser, routes.views.saveregistration);
     app.all('/contact', routes.views.contact);
     app.all('/me', routes.views.me);
 
