@@ -44,6 +44,24 @@ exports = module.exports = function(req, res) {
                 return next(err);
             }
             locals.data.registrations = reg;
+
+            async.forEach(locals.data.registrations, function(registration, next2) {
+        
+                if(registration.registered === true)
+                {
+                    keystone.list('Registration').model.find().where({$and: [{'person': {$ne: locals.user.id}},{'eventDate':registration.eventDate.id},{'competence':registration.competence.id},{'availability':{$in: ['D', 'SN']}}]}).populate('person').exec(
+function(err, reg2) {
+    registration.remplacements = reg2;
+
+                                        next2(err);
+
+}
+                        );
+                }
+            }, function(err) {
+                next(err);
+            });
+
             //console.log('registrations', locals.data.registrations);
             next();
         });
