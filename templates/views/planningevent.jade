@@ -9,6 +9,7 @@ block intro
 				
 
 block content
+
 	.container: .row
 		.col-md-6
 			h1 #{data.event.title} (#{jolieDate(data.event.eventDate)})
@@ -64,6 +65,22 @@ block content
 							a(href='/keystone/event-dates/#{data.event._id}')
 								span(class="glyphicon glyphicon-edit")
 								span  En ajouter
+					
+					br
+					if data.event.mailSent
+							div(class="alert alert-warning" style="margin:3px" id="mailsent")
+									span(class="glyphicon glyphicon-warning-sign")
+									span   Attention, Un e-mail a déjà été envoyé pour cette évènement.
+					else
+							div(class="alert alert-warning" style="margin:3px" id="mailsent" hidden="hidden")
+									span(class="glyphicon glyphicon-warning-sign")
+									span   Attention, un e-mail a déjà été envoyé pour cette évènement.
+
+					br 
+					a(href='javascript:void(0)' onclick="sendmail('#{data.event._id}')")
+						span(class="glyphicon glyphicon-envelope")
+						span  Envoyer un e-mail à l'équipe
+					
 
 	.container: .row: .col-sm-12.col-md-12
 		hr

@@ -44,6 +44,7 @@ exports = module.exports = function(app) {
     app.all('/disponibilite', routes.views.disponibilite);
     app.all('/planning', routes.views.planning);
     app.all('/planning/:eventid', routes.views.planningevent);
+    app.all('/sendmail/:eventid', routes.views.sendmail);
     app.all('/planning/save/:registration/:action', routes.views.saveregistration);
     app.all('/contact', routes.views.contact);
     app.all('/me', routes.views.me);

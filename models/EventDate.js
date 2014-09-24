@@ -15,7 +15,8 @@ EventDate.add({
     title: {type: String, required: true},
     president: {type: Types.Relationship, ref: 'User', index: true, initial: true},
     description: {type: Types.Textarea, required: false, initial: true},
-    eventDate: {type: Types.Date, index: true, required: true, initial: true}
+    eventDate: {type: Types.Date, index: true, required: true, initial: true},
+    mailSent : {type : Types.Boolean,initial:false}
 });
 
 

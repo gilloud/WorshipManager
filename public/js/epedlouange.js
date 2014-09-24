@@ -229,3 +229,11 @@ var displayDatasEmpty = function()
 {
     displayDatas(mail_dest, members);
 };
+
+var sendmail = function(eventid)
+{
+ $.ajax({url: "/sendmail/"+eventid, success: function (result) {
+document.getElementById("mailsent").hidden = false;
+
+        }});
+};

@@ -8,7 +8,10 @@
     "underscore": "~1.6.0",
     "dotenv": "0.4.0",
     "keystone-social-login": "git+https://github.com/JohnnyEstilles/keystone-social-login.git",
-    "bcrypt-nodejs": "~0.0.3"
+    "bcrypt-nodejs": "~0.0.3",
+    "nodemailer":"1.3.0",
+    "nodemailer-smtp-transport" :"0.1.12",
+    "nodemailer-wellknown" :"0.1.2"
 
   },
   "devDependencies": {
