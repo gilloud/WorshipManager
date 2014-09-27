@@ -98,6 +98,16 @@ mixin displayLine(event)
 			+displayDispo(event._id,'all',lockEdit)
 
 
+mixin displayTitle()
+	tr 
+		td
+		each competence in data.competences
+			td(style='text-align:center')
+				b #{competence.name}
+				script(type='text/javascript').
+					setCompetence('#{competence._id}');
+		if data.competences.length > data.nbCompetencesEnableGlobal
+			td(style='text-align:center;max-width:80px'): b Forcer pour la ligne entière
 
 block intro
 	.container
@@ -116,17 +126,11 @@ block content
 							br
 							div(class="alert alert-warning" role="alert" id='pagemodified' hidden='true')
 							table(width='100%')
-								tr 
-									td
-									each competence in data.competences
-										td(style='text-align:center')
-											b #{competence.name}
-											script(type='text/javascript').
-												setCompetence('#{competence._id}');
-									if data.competences.length > data.nbCompetencesEnableGlobal
-										td(style='text-align:center;max-width:80px'): b Forcer pour la ligne entière
 								- var i = 0;
+								- var j = 0;
 								each event in data.events
+									if ( i % 5 ) == 0
+										+displayTitle()
 									+displayLine(event)
 							br
 							div(class="alert alert-warning" role="alert" id='pagemodified2' hidden='true')
