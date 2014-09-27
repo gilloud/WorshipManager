@@ -11,6 +11,7 @@ mixin displayDispo(eventid,competenceid,lockEdit)
 		- var found = 'CREATE'
 		- var registered = false;
 		- var remplacements = [];
+		- var regid = '';
 		
 		each reg in data.registrations
 			if  reg.competence._id.toString() === competenceid.toString() && reg.eventDate._id.toString() === eventid.toString() 
@@ -18,6 +19,7 @@ mixin displayDispo(eventid,competenceid,lockEdit)
 				- value = reg.availability.toString();
 				- found = 'UPDATE'
 				- registered = reg.registered;
+				- regid = reg._id;
 				
 
 		if lockEdit
@@ -30,11 +32,16 @@ mixin displayDispo(eventid,competenceid,lockEdit)
 			if value == 'ND'
 				div.rouge Non disponible
 			if registered
-				span(class="glyphicon glyphicon-info-sign")
-				span  Vous êtes Sélectionné pour cette date. Voici la liste des autres personnes disponibles pour cette date que vous pouvez contacter si vous cherchez un remplaçant :
-				ul 
-				each remplacement in remplacements
-					li #{remplacement.person.name.first} #{remplacement.person.name.last}
+				div(class="alert alert-info" role="alert" )
+					
+					div(id='remplacant-#{regid}-show')
+						span(class="glyphicon glyphicon-info-sign")
+						span  Vous êtes sélectionné pour cette date. Voici les autres personnes disponibles pour cette date&nbsp;:
+						ul
+						if remplacements instanceof Array
+							each remplacement in remplacements
+								li #{remplacement.person.name.first} #{remplacement.person.name.last}
+					
 
 		else
 			- var v_select_style='';
