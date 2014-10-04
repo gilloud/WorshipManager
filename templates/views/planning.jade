@@ -78,7 +78,7 @@ block content
 							.col-sm-2.col-md-2
 								p Président
 							.col-sm-2.col-md-2
-								p Statistiques
+								p
 							.col-sm-2.col-md-2
 								p Actions
 						- var i = 0;
@@ -103,8 +103,7 @@ block content
 									else
 										p -
 								.col-sm-2.col-md-2
-									span.badge(title='Pourcentage de dispo pour cette date : somme des réponses autorisant la sélection / somme des compétences de l\'ensemble ('+event.countDispo+'/'+data.countCompetences+')') #{percentCalculation(event.countDispo,data.countCompetences)}% Dispo
-									span.badge(title='Pourcentage de remplissage pour cette date : somme des réponses / somme des compétences de l\'ensemble ('+event.nbResponses+'/'+data.countCompetences+')') #{percentCalculation(event.nbResponses,data.countCompetences)}% Rempli
+
 								.col-sm-2.col-md-2
 									a(href='/planning/#{event._id}') 
 										span(class="glyphicon glyphicon-file")
