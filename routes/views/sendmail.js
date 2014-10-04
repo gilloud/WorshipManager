@@ -1,17 +1,26 @@
 var keystone = require('keystone'),
 	async = require('async'),
-        nodemailer = require("nodemailer");
+    nodemailer = require("nodemailer"),
+    smtpTransport = require('nodemailer-smtp-transport');
 
 exports = module.exports = function(req, res) {
 
 
-    var transporter = nodemailer.createTransport({
+   /* var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: process.env.MAIL_USER,
             pass: process.env.MAIL_PASSWORD
         }
-    });
+    });*/
+    var transporter = nodemailer.createTransport(smtpTransport({
+    host: process.env.MAIL_SMTP,
+    port: 25,
+    auth: {
+        user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASSWORD
+    }
+}));
 
 	var view = new keystone.View(req, res),
 		locals = res.locals;
@@ -47,13 +56,14 @@ exports = module.exports = function(req, res) {
 
     });
     view.on('init', function (next) {
-        console.log(locals.data.event);
+
 var date = new Date(locals.data.event.eventDate);
 var d = date.getDate();
 var monthNames = [ "Janvier", "Février", "Mars", "Avril", "Mai", "Juin","Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" ];
 var m = monthNames[date.getMonth()];
 var y = date.getFullYear();
 var jolieDate = d+' '+m+' '+y;
+var destinataires = '';
         var email = "Voici la liste des personnes faisant partie du groupe de louange pour le <b>"+locals.data.event.title+"</b> du <b>"+jolieDate+"</b> :<br />";
     if (locals.data.event.description !=='')
     {
@@ -64,11 +74,13 @@ var jolieDate = d+' '+m+' '+y;
      if(locals.data.event.president)
      {
         email += "<li>President : "+locals.data.event.president.name.first+' '+locals.data.event.president.name.last+"</li>";
+        destinataires += locals.data.event.president.email+';';
      }
 for (var i = locals.data.registration.length - 1; i >= 0; i--) {
     var reg = locals.data.registration[i];
 
          email += "<li>"+reg.competence.name+' : '+reg.person.name.first+' '+reg.person.name.last+"</li>";
+         destinataires += reg.person.email+';';
 
      }
 
@@ -76,10 +88,12 @@ for (var i = locals.data.registration.length - 1; i >= 0; i--) {
     email += "</ul><hr />";
 
     email += 'Inscrivez vos disponibilités sur <a href="http://louange.epe-drac.fr">EpedLouange</a> !<br />';
+    email += '<hr />'+ destinataires;
 
         transporter.sendMail({
-            from: 'Eped Mail Sender <gilles.pilloud@gmail.com>',
-            to: 'gilles@pilloud.fr',
+            from: locals.user.name.first+' '+locals.user.name.last+' <louange@epe-drac.fr>',
+            to: destinataires,
+            cc: locals.user.email+';gilles@pilloud.fr',
             subject: 'Equipe de louange pour le '+locals.data.event.title+" du "+jolieDate,
             generateTextFromHTML: true,
             html: email
