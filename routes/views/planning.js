@@ -44,16 +44,11 @@ exports = module.exports = function(req, res) {
 
                 keystone.list('Registration').model.count().where({$and: [{eventDate: event._id}, {availability: {$in: ['D', 'SN']}}]}).exec(function(err, count) {
                     event.countDispo = count;
-//                    console.log(event._id, count);
-//					next(err);
                 });
                 keystone.list('Registration').model.count().where({$and: [{eventDate: event._id}, {availability: {$in: ['D', 'SN', 'ND']}}]}).exec(function(err, count) {
                     event.nbResponses = count;
-//                    console.log(event._id, count);
-//					next(err);
                 });
             }, function(err) {
-//		next(err);
             });
 
            
@@ -73,6 +68,7 @@ exports = module.exports = function(req, res) {
                 return next(err);
             }
             locals.data.oldevents = results;
+
             next();
         });
 
