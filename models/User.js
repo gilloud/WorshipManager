@@ -13,7 +13,8 @@ User.add({
     name: {type: Types.Name, required: true, initial: true, index: true},
     email: {type: Types.Email, initial: true, required: true, index: true},
     password: {type: Types.Password, initial: true, required: true},
-    competences: {type: Types.Relationship, ref: 'Competence', many: true, initial: true}
+    competences: {type: Types.Relationship, ref: 'Competence', many: true, initial: true},
+    family: {type: Types.Relationship, ref: 'Family', many: false, initial: true}
 
 }, 'Permissions', {
     isAdmin: {type: Boolean, label: 'Can access Keystone', index: true}

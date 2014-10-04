@@ -32,15 +32,16 @@ mixin displayDispo(eventid,competenceid,lockEdit)
 			if value == 'ND'
 				div.rouge Non disponible
 			if registered
-				div(class="alert alert-info" role="alert" )
-					
-					div(id='remplacant-#{regid}-show')
-						span(class="glyphicon glyphicon-info-sign")
-						span  Vous êtes sélectionné pour cette date. Voici les autres personnes disponibles pour cette date&nbsp;:
-						ul
-						if remplacements instanceof Array
-							each remplacement in remplacements
-								li #{remplacement.person.name.first} #{remplacement.person.name.last}
+				if remplacements instanceof Array
+					div(class="alert alert-info" role="alert" )
+						
+						div(id='remplacant-#{regid}-show')
+							span(class="glyphicon glyphicon-info-sign")
+							span  Vous êtes sélectionné pour cette date. Voici les autres personnes disponibles pour cette date&nbsp;:
+							ul
+							if remplacements instanceof Array
+								each remplacement in remplacements
+									li #{remplacement.person.name.first} #{remplacement.person.name.last}
 					
 
 		else
@@ -92,6 +93,40 @@ mixin displayLine(event)
 								span(class="glyphicon glyphicon-remove")
 
 			p: i #{event.description}
+			if user.family
+				a(href="#test_modal#{event._id}" data-toggle="modal")
+					span(class='glyphicon glyphicon-user')
+					span  Disponibilités de ma famille
+				div(class="modal fade" id="test_modal#{event._id}")
+					div.modal-dialog
+						div.modal-content
+							div.modal-header
+								button(type="button" class="close" data-dismiss="modal")
+									span(class="sr-only") Close
+								h4(class="modal-title") Disponibilité de ma famille pour le #{jolieDate(event.eventDate)}
+							div.modal-body
+
+								- var person ='';
+								- var others = false;
+								each reg in event.family
+									if reg.person.id != user.id
+										- others = true;
+										if person !== reg.person.id 
+											- person = reg.person.id
+											h3 #{reg.person.name.first}
+											
+										if reg.availability == 'C'
+											div(style='text-align:center') - #{reg.competence.name}
+										if reg.availability == 'D'
+											div.vert #{reg.competence.name}
+										if reg.availability == 'SN'
+											div.orange #{reg.competence.name}
+										if reg.availability == 'ND'
+											div.rouge #{reg.competence.name}
+								if !others
+									div Pas de disponibilités remplies par ma famille...
+							div.modal-footer
+								button(type="button" class="btn btn-default" data-dismiss="modal") Fermer
 		each competence in data.competences
 			+displayDispo(event._id,competence._id,lockEdit)
 		if data.competences.length > data.nbCompetencesEnableGlobal
@@ -145,3 +180,5 @@ block content
 						div(class="alert alert-warning" role="alert")
 							h3.text-muted Vous n'êtes pas connecté : 
 								a(href='/keystone/signin') Se connecter
+
+	

@@ -29,7 +29,9 @@ exports = module.exports = function(req, res) {
     events: [],
     bootstrapsize: '1',
     nbdayslock: 6,
-    nbCompetencesEnableGlobal: 2
+    nbCompetencesEnableGlobal: 2,
+    famille : [],
+    famille2 : []
 };
     // Load all categories
     view.on('init', function(next) {
@@ -51,7 +53,7 @@ exports = module.exports = function(req, res) {
         });
     });
     view.on('init', function(next) {
-     async.forEach(locals.data.registrations, function(registration, next) {
+       async.forEach(locals.data.registrations, function(registration, next) {
 
         if(registration.registered === true)
         {
@@ -69,9 +71,9 @@ exports = module.exports = function(req, res) {
         }
 
     });
-     next();
+       next();
 
- });
+   });
     view.on('init', function(next) {
         var today = new Date();
         keystone.list('EventDate').model.find().where({eventDate: {$gt: today}}).sort('eventDate').exec(function(err, results) {
@@ -84,6 +86,52 @@ exports = module.exports = function(req, res) {
             //console.log('events:', locals.data.events);
             next();
         });
+    });
+    view.on('init', function(next) {
+        console.log('famillllle',locals.user.family);
+        keystone.list('User').model.find().where({'family': locals.user.family}).exec(function(err, users) {
+
+            locals.data.famille = users;
+
+            for (var i = users.length - 1; i >= 0; i--) {         
+           
+                console.log(users[i]);
+              locals.data.famille2.push(users[i]._id);  
+          };
+          console.log('bbbb');
+          console.log(locals.data.famille2);
+          console.log('bbbb');
+
+          next();
+      });
+    });
+    view.on('init', function(next) {
+
+        //console.log(locals.data.famille2,"aaaaaaaaaaaaaa");
+
+
+        async.each(locals.data.events, function(event, next) {
+
+
+            //console.log('person',locals.data.famille2);
+            //console.log('eventDate',event.id);
+
+            keystone.list('Registration').model.find().where({$and: [{'person': {$in: locals.data.famille2}},{'eventDate':event.id}]}).populate('person competence').sort('person').exec(
+                function(err, reg) {
+                   
+
+                    event.family = reg;
+                   //console.log('reg',reg);
+
+
+            //console.log('registrations', reg);
+            next();
+        }
+        );
+        }, function(err) {
+                next(err);
+            });
+
     });
     view.on('init', function(next) {
         if (!locals.user)
