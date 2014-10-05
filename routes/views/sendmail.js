@@ -74,13 +74,13 @@ var destinataires = '';
      if(locals.data.event.president)
      {
         email += "<li>President : "+locals.data.event.president.name.first+' '+locals.data.event.president.name.last+"</li>";
-        destinataires += locals.data.event.president.email+';';
+        destinataires += locals.data.event.president.name.first+' '+locals.data.event.president.name.last+' <'+locals.data.event.president.email+'>,';
      }
 for (var i = locals.data.registration.length - 1; i >= 0; i--) {
     var reg = locals.data.registration[i];
 
          email += "<li>"+reg.competence.name+' : '+reg.person.name.first+' '+reg.person.name.last+"</li>";
-         destinataires += reg.person.email+';';
+         destinataires += reg.person.name.first+' '+reg.person.name.last+' <'+reg.person.email+'>,';
 
      }
 
@@ -88,12 +88,18 @@ for (var i = locals.data.registration.length - 1; i >= 0; i--) {
     email += "</ul><hr />";
 
     email += 'Inscrivez vos disponibilités sur <a href="http://louange.epe-drac.fr">EpedLouange</a> !<br />';
-    email += '<hr />'+ destinataires;
+
+    if(process.env.NODE_ENV !== 'production')
+    {
+        email += '<hr />Destinataires qui auraient du recevoir cet e-mail :'+ destinataires;
+
+        destinataires = '';
+    }
 
         transporter.sendMail({
             from: locals.user.name.first+' '+locals.user.name.last+' <louange@epe-drac.fr>',
             to: destinataires,
-            cc: locals.user.email+';gilles@pilloud.fr',
+            cc: locals.user.email+',gilles@pilloud.fr',
             subject: 'Equipe de louange pour le '+locals.data.event.title+" du "+jolieDate,
             generateTextFromHTML: true,
             html: email
