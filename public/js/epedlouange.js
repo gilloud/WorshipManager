@@ -235,5 +235,10 @@ var sendmail = function(eventid)
  $.ajax({url: "/sendmail/"+eventid, success: function (result) {
 document.getElementById("mailsent").hidden = false;
 
-        }});
+        }}) .done(function( data ) {
+mailjustsent
+    document.getElementById('mailjustsent').hidden = false;
+
+
+});
 };

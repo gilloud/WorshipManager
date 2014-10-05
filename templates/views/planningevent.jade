@@ -77,6 +77,12 @@ block content
 									span   Attention, un e-mail a déjà été envoyé pour cette évènement.
 
 					br 
+
+					div(class="alert alert-info" style="margin:3px" id="mailjustsent" hidden="hidden")
+									span(class="glyphicon glyphicon-info-sign")
+									span   Votre e-mail vient d'être envoyé !
+					br
+
 					a(href='javascript:void(0)' onclick="sendmail('#{data.event._id}')")
 						span(class="glyphicon glyphicon-envelope")
 						span  Envoyer un e-mail à l'équipe
