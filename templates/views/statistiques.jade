@@ -1,0 +1,18 @@
+extends ../layouts/default
+
+block content
+	.container: .row
+		.col-sm-8.col-md-9
+
+
+			h1 Statistiques
+			p Statistiques de remplissage du planning par les différents membres de l'équipe de musique à 45 Jours.
+			ul(class="list-group")
+			each user in data.theusers
+				if user.competences.length > 0
+					li(class="list-group-item" style="background-color:#{user.hexcolor};color:white") #{user.name.first} #{user.name.last}
+						span(class="badge") #{user.percent_filled}%
+	.container: .row: .col-sm-12.col-md-12
+			hr
+			span(class="glyphicon glyphicon-info-sign")
+			span  Ecran réservé aux seuls administrateurs de EpedLouange

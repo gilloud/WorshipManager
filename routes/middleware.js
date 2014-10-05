@@ -29,6 +29,7 @@ exports.initLocals = function(req, res, next) {
         {label: 'Accueil', key: 'accueil', href: '/', keystoneadmin: false},
         {label: 'Disponibilités', key: 'disponibilite', href: '/disponibilite', keystoneadmin: false},
         {label: 'Planning', key: 'planning', href: '/planning', keystoneadmin: true},
+        {label: 'Statistiques', key: 'statistiques', href: '/statistiques', keystoneadmin: true},
         {label: 'Mes informations', key: 'me', href: '/me', keystoneadmin: false}
     ];
 

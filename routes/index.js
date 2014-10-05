@@ -48,6 +48,7 @@ exports = module.exports = function(app) {
     app.all('/planning/save/:registration/:action', middleware.requireUser, routes.views.saveregistration);
     app.all('/contact', routes.views.contact);
     app.all('/me', routes.views.me);
+    app.all('/statistiques', routes.views.statistiques);
 
     // NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
     // app.get('/protected', middleware.requireUser, routes.views.protected);
