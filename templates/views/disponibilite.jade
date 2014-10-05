@@ -88,7 +88,7 @@ mixin displayLine(event)
 				
 				if nowplus > event.eventDate || event.mailSent
 					div(class="alert alert-warning" style="margin:3px" id='date_locked_#{event._id}')
-						p Modification non-autorisée, la date de l'évènement étant à moins de #{data.nbdayslock} jours ou la sélection de l'équipe a déjà été effectuée.
+						p Modification non-autorisée : la date de l'évènement est à moins de #{data.nbdayslock} jours ou alors, la sélection de l'équipe a déjà été effectuée.
 							a(onClick="closeMe('date_locked_#{event._id}')" href="javascript:void(0)")
 								span(class="glyphicon glyphicon-remove")
 
