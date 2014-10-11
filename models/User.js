@@ -17,7 +17,7 @@ User.add({
     family: {type: Types.Relationship, ref: 'Family', many: false, initial: true}
 
 }, 'Permissions', {
-    isAdmin: {type: Boolean, label: 'Can access Keystone', index: true}
+    isAdmin: {type: Boolean, label: 'Can admin EpedLouange', index: true}
 });
 
 social.plugin(User);
