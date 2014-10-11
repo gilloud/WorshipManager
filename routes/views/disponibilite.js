@@ -88,7 +88,7 @@ exports = module.exports = function(req, res) {
         });
     });
     view.on('init', function(next) {
-        console.log('famillllle',locals.user.family);
+        
         keystone.list('User').model.find().where({'family': locals.user.family}).exec(function(err, users) {
 
             locals.data.famille = users;
@@ -97,11 +97,8 @@ exports = module.exports = function(req, res) {
            
                 console.log(users[i]);
               locals.data.famille2.push(users[i]._id);  
-          };
-          console.log('bbbb');
-          console.log(locals.data.famille2);
-          console.log('bbbb');
-
+          }
+          
           next();
       });
     });
