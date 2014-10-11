@@ -102,9 +102,14 @@ exports = module.exports = function(req, res) {
 			}
 		});
 
-		 locals.data.theusers.sort(function(a, b){return a.percent_filled - b.percent_filled});
-		next();
-	});
+locals.data.theusers.sort(
+	function(a, b)
+	{
+		return a.percent_filled - b.percent_filled;
+	}
+	);
+next();
+});
 
 	// Render the view
 	view.render('statistiques');
