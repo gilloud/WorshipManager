@@ -32,3 +32,4 @@ node_modules
 
 nbproject
 .sublime-grunt.cache
+*sublime*
