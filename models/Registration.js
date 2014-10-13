@@ -16,7 +16,7 @@ Registration.add({
     person: {type: Types.Relationship, ref: 'User', index: true, initial: true, required: true},
     competence: {type: Types.Relationship, ref: 'Competence', index: true, initial: true, required: true},
     eventDate: {type: Types.Relationship, ref: 'EventDate', initial: true, required: true},
-    registered: {type: Types.Boolean, initial: true, required: true}
+    registered: {type: Types.Boolean, initial: true, required: false}
 });
 
 Registration.defaultColumns = 'person, availability,competence,eventDate';
