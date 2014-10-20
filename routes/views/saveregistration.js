@@ -28,9 +28,11 @@ exports = module.exports = function(req, res) {
 
 
         if (req.params.registration) {
-        keystone.list('Registration').model.update({'_id': req.params.registration}, {registered: toRegister}).exec();
-            console.log(toRegister);
+        keystone.list('Registration').model.update({'_id': req.params.registration}, {registered: toRegister}).exec(function(err, numAffected, c) {
+
+            console.log(err);
             next();
+            });
         } 
 		
 	});
